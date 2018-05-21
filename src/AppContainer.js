@@ -1,47 +1,62 @@
 import React, { Component } from 'react';
 import _reduce from 'lodash/reduce';
+import _values from 'lodash/values';
 
-import UserDetails from './UserDetails';
-import SeatMap from './SeatMap';
-import Booking from './Booking';
+import { getBookings, saveBookings } from './localStorage';
 
-import { OCCUPIED_SEAT, SELECTED_SEAT } from './constants/seatMap';
+import UserDetails from './components/UserDetails';
+import SeatMap from './components/SeatMap';
+import Booking from './components/Booking';
+
+import {
+  SEAT_ROWS_COUNT,
+  SEAT_PER_ROW_COUNT,
+  OCCUPIED_SEAT,
+  SELECTED_SEAT
+} from './constants/seatMap';
 
 import './App.css';
 
-const BOOKING = [{
-  name: 'Abc',
-  seats: ['A5', 'A6']
-}, {
-  name: 'xyz',
-  seats: ['H5', 'H4', 'H3']
-}];
+const getInitialState = () => {
+  const booking = getBookings();  // from local storage
+
+  return {
+    user: {
+      name: '',
+      seatCount: 1
+    },
+    booking,
+    seatMap: _reduce(booking, (seatMap, booking) => {
+      booking.seats.forEach(seatId => {
+        seatMap[seatId] = OCCUPIED_SEAT;
+      });
+      return seatMap;
+    }, {}),
+    canSelectSeats: false,
+    showBooking: false,
+  };
+};
 
 class AppContainer extends Component {
   constructor() {
     super();
-    this.state = {
-      user: {},
-      // from local storage
-      booking: BOOKING,
-      seatMap: _reduce(BOOKING, (seatMap, booking) => {
-        booking.seats.forEach(seatId => {
-          seatMap[seatId] = OCCUPIED_SEAT;
-        });
-        return seatMap;
-      }, {}),
-      canSelectSeats: false,
-      showBooking: false,
-    };
+    this.state = getInitialState();
   }
 
   hasUserDetails = () => {
-    return this.state.user.name && this.state.user.seatCount;
+    const { user } = this.state;
+    return user.name && user.seatCount;
   }
 
   hasValidSeatBooking = () => {
     const selectedSeatsCount = this.getSelectedSeats().length;
     return selectedSeatsCount === this.state.user.seatCount;
+  }
+
+  getAvailableSeatsCount = () => {
+    const totalSeats = SEAT_ROWS_COUNT * SEAT_PER_ROW_COUNT,
+      seatsTaken = _values(this.state.seatMap).length;
+    return totalSeats - seatsTaken;
   }
 
   getSelectedSeats = () => {
@@ -60,7 +75,13 @@ class AppContainer extends Component {
     });
   }
 
-  onSubmitUser = () => this.setState({ canSelectSeats: true });
+  onSubmitUser = () => {
+    const { seatCount } = this.state.user;
+    if (seatCount < 1 || seatCount > this.getAvailableSeatsCount()) {
+      return alert(`Sorry! We don't have ${seatCount} seats available`);
+    }
+    this.setState({ canSelectSeats: true });
+  }
 
   onClickSeat = id => {
     const { seatMap } = this.state;
@@ -72,13 +93,22 @@ class AppContainer extends Component {
     });
   }
 
-  onSubmitBooking = () => this.setState({
-    showBooking: true,
-    booking: [...this.state.booking, {
+  onSubmitBooking = () => {
+    const updatedBookings = [...this.state.booking, {
       name: this.state.user.name,
       seats: this.getSelectedSeats(),
-    }]
-  });
+    }];
+
+    this.setState({
+      showBooking: true,
+      booking: updatedBookings
+    });
+    saveBookings(updatedBookings);  // saving in local storage
+  }
+
+  onReset = () => {
+    this.setState(getInitialState());
+  }
 
   renderHeader = () => (
     <header className="App-header">
@@ -87,9 +117,10 @@ class AppContainer extends Component {
   );
 
   renderSeatMap = () => {
-    return this.state.canSelectSeats && [
-        <SeatMap key="seat-map" seatMap={this.state.seatMap} onClickSeat={this.onClickSeat} />,
-        <button key="save-button" className="save-seat-button" disabled={!this.hasValidSeatBooking()} onClick={this.onSubmitBooking}>Confirm Selection</button>
+    const { state } = this;
+    return state.canSelectSeats && [
+        <SeatMap key="seat-map" seatMap={state.seatMap} onClickSeat={this.onClickSeat} />,
+        <button key="save-button" className="App-button" disabled={!this.hasValidSeatBooking() || state.showBooking} onClick={this.onSubmitBooking}>Confirm Selection</button>
       ];
   }
 
@@ -101,15 +132,14 @@ class AppContainer extends Component {
     const { state } = this;
     const hasUserDetails = this.hasUserDetails();
 
-    console.log('---', state);
-
     return (
       <div className="App">
         {this.renderHeader()}
         <UserDetails {...state.user} onChange={this.onChangeUserDetail} />
-        <button className="user-submit-button" disabled={!hasUserDetails} onClick={this.onSubmitUser}>Start Selecting</button>
+        <button className="App-button" disabled={!hasUserDetails || state.showBooking} onClick={this.onSubmitUser}>Start Selecting</button>
         {this.renderSeatMap()}
         {this.renderBookedSection()}
+        {state.showBooking && <button className="App-button" onClick={this.onReset}>Book new</button>}
       </div>
     );
   }

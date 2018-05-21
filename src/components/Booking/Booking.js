@@ -1,4 +1,5 @@
 import React from 'react';
+import './booking.css';
 
 class Booking extends React.PureComponent {
   renderHeader = () => (

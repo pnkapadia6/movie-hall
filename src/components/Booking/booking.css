@@ -1,0 +1,25 @@
+/*Booking*/
+
+.booking-container {
+    margin: 1rem auto;
+    width: 75%;
+}
+
+.booking-header {
+    border-top: 0.1rem solid #ccc;
+}
+
+.booking-row {
+    border-bottom: 0.1rem solid #ccc;
+    display: flex;
+}
+
+.booking-field {
+    border-right: 0.1rem solid #ccc;
+    flex: 1;
+    padding: 0.5rem 0;
+}
+
+.booking-field:first-child {
+    border-left: 0.1rem solid #ccc;
+}

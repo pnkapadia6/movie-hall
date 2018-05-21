@@ -1,0 +1,18 @@
+/* User Details*/
+.user-details {
+    display: flex;
+    justify-content: space-around;
+}
+
+.user-details {
+    padding: 1rem 10rem;
+}
+
+.user-detail-label {
+    font-size: 1rem;
+    margin-right: 1rem;
+}
+
+.user-detail-value {
+    height: 1.5rem;
+}

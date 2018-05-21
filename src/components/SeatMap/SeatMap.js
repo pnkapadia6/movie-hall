@@ -11,7 +11,9 @@ import {
   SELECTED_SEAT,
   ROW_BREAKS,
   SEAT_BREAKS
-} from './constants/seatMap';
+} from '../../constants/seatMap';
+
+import './seatMap.css';
 
 class SeatMap extends React.PureComponent {
 

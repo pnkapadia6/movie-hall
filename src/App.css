@@ -1,160 +1,19 @@
 .root {
-  width: 100%;
+    width: 100%;
 }
 
 .App {
-  text-align: center;
+    text-align: center;
 }
 
 .App-header {
-  color: #565656;
+    color: #565656;
 }
 
 .App-title {
-  font-size: 1.5em;
+    font-size: 1.5em;
 }
 
-
-/* User Details*/
-.user-details {
-  display: flex;
-  justify-content: space-around;
-}
-
-.user-details {
-  padding: 1rem 10rem;
-}
-
-.user-detail-label {
-  font-size: 1rem;
-  margin-right: 1rem;
-}
-
-.user-detail-value {
-  height: 1.5rem;
-}
-
-.user-submit-button,
-.save-seat-button {
-  height: 2rem;
-}
-
-
-/*Seat Map*/
-.seat-map-container {
-  margin: 3rem auto 0;
-  width: 75%;
-}
-
-.seat-map-viewer {
-  display: flex;
-}
-
-.screen {
-  align-items: center;
-  border: 0.2rem solid #ccc;
-  display: flex;
-  height: 2rem;
-  justify-content: center;
-}
-
-.hall-map {
-  display: flex;
-  flex-direction: column;
-  padding: 3rem 0 1rem;
-  width: 85%;
-}
-
-.hall-row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-}
-
-.hall-row--has-break {
-  margin-bottom: 3rem;
-}
-
-.hall-seat-dummy,
-.hall-seat-label {
-  flex: 1;
-  width: 1rem;
-}
-
-.hall-seat-label--has-break {
-  margin-right: 3rem;
-}
-
-/*Map Helper*/
-.map-helper {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 15%;
-}
-
-.map-helper-section {
-  align-items: center;
-  display: flex;
-  margin: 1rem;
-}
-
-.map-helper-label {
-  margin-left: 1rem;
-}
-
-
-/*Seat*/
-.hall-seat-container {
-  display: flex;
-  flex: 1;
-  justify-content: center;
-}
-
-.hall-seat-container--has-break {
-  margin-right: 3rem;
-}
-
-.hall-seat {
-  border: 0.2rem solid #ccc;
-  cursor: pointer;
-  height: 1rem;
-  width: 1rem;
-}
-
-.hall-seat--selected {
-  background-color: green;
-}
-
-.hall-seat--occupied {
-  background-color: red;
-  cursor: not-allowed;
-}
-
-
-/*Booking*/
-
-.booking-container {
-  margin: 1rem auto;
-  width: 75%;
-}
-
-.booking-header {
-  border-top: 0.1rem solid #ccc;
-}
-
-.booking-row {
-  border-bottom: 0.1rem solid #ccc;
-  display: flex;
-}
-
-.booking-field {
-  border-right: 0.1rem solid #ccc;
-  flex: 1;
-  padding: 0.5rem 0;
-}
-
-.booking-field:first-child {
-  border-left: 0.1rem solid #ccc;
+.App-button {
+    height: 2rem;
 }
